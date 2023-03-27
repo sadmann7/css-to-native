@@ -1,5 +1,3 @@
-import type { NextApiRequest } from "next";
-import type { NextRequest } from "next/server";
 import type { Dispatch, SetStateAction } from "react";
 
 export type OpenAIStreamPayload = {
@@ -27,62 +25,5 @@ export type ChatGPTMessage = {
   role: ChatGPTAgent;
   content: string;
 };
-
-export interface ExtendedNextRequest extends NextRequest {
-  json: () => Promise<{
-    requirement: string;
-    framework: FRAMEWORK;
-  }>;
-}
-
-export interface ExtendedNextApiRequestPkg extends NextApiRequest {
-  body: {
-    name: string;
-  };
-}
-
-export enum FRAMEWORK {
-  NOT_SPECIFIED = "Not specified",
-  REACT = "React.js",
-  SVELTE = "Svelte",
-  VUE = "Vue.js",
-  ANGULAR = "Angular",
-  EXPRESS = "Express",
-}
-
-export type Package = {
-  name?: string;
-  repository?: string;
-  downloads?: string;
-  unpackedSize?: string;
-  lastPublish?: string;
-};
-
-export type PkgData = {
-  start: string;
-  end: string;
-  package: string;
-  downloads: PkgDownload[];
-};
-
-export type PkgDownload = {
-  downloads: number;
-  day: string;
-};
-
-export type ChartDataNivo = {
-  id: string;
-  color?: string;
-  data: {
-    x: string;
-    y: number;
-  }[];
-};
-
-export enum DURATION {
-  LAST_WEEK = "last-week",
-  LAST_MONTH = "last-month",
-  LAST_YEAR = "last-year",
-}
 
 export type SetState<T> = Dispatch<SetStateAction<T>>;

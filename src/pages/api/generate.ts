@@ -1,5 +1,6 @@
-import type { GenerationRequest, OpenAIStreamPayload } from "@/types/globals";
+import type { OpenAIStreamPayload } from "@/types/globals";
 import { openaiStream } from "@/utils/openai";
+import type { NextRequest } from "next/server";
 
 if (!process.env.OPENAI_API_KEY) {
   throw new Error(
@@ -11,14 +12,20 @@ export const config = {
   runtime: "edge",
 };
 
-export default async function handler(req: GenerationRequest) {
-  const { description } = await req.json();
+interface ExtendedNextRequest extends NextRequest {
+  json: () => Promise<{
+    css: string;
+  }>;
+}
+
+export default async function handler(req: ExtendedNextRequest) {
+  const { css } = await req.json();
 
   console.log({
-    description,
+    css,
   });
 
-  const prompt = `Generate the following cron expression: ${description}`;
+  const prompt = `Convert the following css code: ${css} to react native stylesheet.`;
 
   if (!prompt) {
     return new Response("No prompt in the request", { status: 400 });
@@ -30,7 +37,7 @@ export default async function handler(req: GenerationRequest) {
       {
         role: "system",
         content:
-          "You are a cron expression generator. I will give you a description of a cron expression and you will generate it for me. You will just generate each part of the expression. For example, if I give you the description: 'At 0 minutes past 0 hours on 0 day of the month, every month', you will say: '0 0 0 0 0'. Make sure not to include any extra content.",
+          "Your are a css (any type of css) to react native stylesheet converter. You will be given some css code, and you need to convert it to react native stylesheet. Make sure you can handle all the css properties. Make sure to convert all number-like values to numbers, and string-like to strings. Make sure to automatically convert indirect values to their React Native equivalents.",
       },
       { role: "user", content: prompt },
     ],
