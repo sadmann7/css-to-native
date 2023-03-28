@@ -1,5 +1,6 @@
 import type { OpenAIStreamPayload } from "@/types/globals";
 import { openaiStream } from "@/utils/openai";
+import { tailwindcss } from "@/utils/tailwindcss";
 import type { NextRequest } from "next/server";
 
 if (!process.env.OPENAI_API_KEY) {
@@ -36,8 +37,22 @@ export default async function handler(req: ExtendedNextRequest) {
     messages: [
       {
         role: "system",
-        content:
-          "Your are a css (any type of css) to react native stylesheet converter. You will be given some css code, and you need to convert it to react native stylesheet. Make sure you can handle all the css properties. Make sure to convert all number-like values to numbers, and string-like to strings. Make sure to automatically convert indirect values to their React Native equivalents.",
+        content: `You are css to react native stylesheet converter. You will be given some CSS code and you need to convert it to react native stylesheet. You will convert all number-like values to numbers, and string-like to strings. You will automatically convert indirect css values to their React Native equivalents. You will find alternative for css values unsupported by React Native. For example, you will convert gap-4 to margin: 16px.
+        You will also consider shorthand css values during the conversion. You will only give the react native stylesheet object, no further description is needed. 
+        If tailwindcss is used, you will compile the utility classes to vanilla css values first before converting to react native stylesheet. 
+        Here are some utility values to css values mapping: ${tailwindcss.gaps}, ${tailwindcss.fontSizes}, ${tailwindcss.fontWeights}, ${tailwindcss.lineHeights}, ${tailwindcss.letterSpacings}.
+
+        You can use the following code as a reference:
+          {
+            flex: 1,
+            backgroundColor: "#fff",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingVertical: 20,
+          }
+      
+        You can also use the following website to convert CSS to React Native stylesheet: https://reactnative.dev/docs/stylesheet
+        `,
       },
       { role: "user", content: prompt },
     ],

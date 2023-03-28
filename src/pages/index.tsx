@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Head from "next/head";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { z } from "zod";
 
 const schema = z.object({
@@ -121,13 +123,33 @@ const Home: NextPageWithLayout = () => {
               <h2 className="text-base font-semibold text-gray-50 sm:text-lg">
                 Stylesheet
               </h2>
-              <textarea
+              <SyntaxHighlighter
+                language="css"
+                style={dracula}
+                wrapLines={true}
+                showLineNumbers={true}
+                lineNumberStyle={{ color: "#fff" }}
+                customStyle={{
+                  maxHeight: "none",
+                  height: "auto",
+                  overflow: "visible",
+                  wordWrap: "break-word",
+                  color: "inherit",
+                  backgroundColor: "#1D1D1D",
+                  flex: 1,
+                  borderRadius: "0.5rem",
+                }}
+                lineProps={{ style: { whiteSpace: "pre-wrap" } }}
+              >
+                {generatedStyles.replace(/`{3}.*\n/g, "").replace(/`{3}/g, "")}
+              </SyntaxHighlighter>
+              {/* <textarea
                 rows={18}
                 className="w-full rounded-md border-gray-400 bg-transparent px-5 py-4 text-base text-gray-50 transition-colors placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="Stylesheet will appear here.."
                 value={generatedStyles}
                 readOnly
-              />
+              /> */}
             </div>
           </div>
         </div>
