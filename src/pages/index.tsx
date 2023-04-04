@@ -1,3 +1,4 @@
+import CodeBlock from "@/components/CodeBlock";
 import DefaultLayout from "@/components/layouts/DefaultLayout";
 import Button from "@/components/ui/Button";
 import type { NextPageWithLayout } from "@/pages/_app";
@@ -73,9 +74,9 @@ const Home: NextPageWithLayout = () => {
       <main className="w-full pt-20 pb-16">
         <div className="container grid max-w-6xl place-items-center gap-12 sm:gap-14">
           <h1 className="w-full max-w-4xl text-center text-3xl font-bold leading-tight text-gray-200 sm:text-5xl sm:leading-tight">
-            Convert your <span className="text-blue-400">CSS</span> to react
+            Convert your <span className="text-violet-400">CSS</span> to react
             native
-            <span className="text-blue-400"> stylesheet</span> in seconds
+            <span className="text-violet-400"> stylesheet</span> in seconds
           </h1>
           <div className="grid w-full gap-5 lg:grid-cols-2">
             <form
@@ -93,7 +94,7 @@ const Home: NextPageWithLayout = () => {
                 <textarea
                   id="css"
                   rows={18}
-                  className="w-full rounded-md border-gray-400 bg-transparent px-5 py-4 text-base text-gray-50 transition-colors placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full rounded-md border-gray-400 bg-transparent px-5 py-4 text-base text-gray-50 transition-colors placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
                   placeholder="Enter your css here.."
                   {...register("css", { required: true })}
                   onKeyDown={(e) => {
@@ -123,26 +124,7 @@ const Home: NextPageWithLayout = () => {
               <h2 className="text-base font-semibold text-gray-50 sm:text-lg">
                 Stylesheet
               </h2>
-              <SyntaxHighlighter
-                language="css"
-                style={dracula}
-                wrapLines={true}
-                showLineNumbers={true}
-                lineNumberStyle={{ color: "#fff" }}
-                customStyle={{
-                  maxHeight: "none",
-                  height: "auto",
-                  overflow: "visible",
-                  wordWrap: "break-word",
-                  color: "inherit",
-                  backgroundColor: "#1D1D1D",
-                  flex: 1,
-                  borderRadius: "0.5rem",
-                }}
-                lineProps={{ style: { whiteSpace: "pre-wrap" } }}
-              >
-                {generatedStyles.replace(/`{3}.*\n/g, "").replace(/`{3}/g, "")}
-              </SyntaxHighlighter>
+              <CodeBlock code={generatedStyles} language="css" />
             </div>
           </div>
         </div>
