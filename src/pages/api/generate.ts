@@ -26,7 +26,23 @@ export default async function handler(req: ExtendedNextRequest) {
     css,
   });
 
-  const prompt = `Convert the following css code: ${css} to react native stylesheet.`;
+  const prompt = `Convert the following CSS code: ${css} to react native stylesheet.`;
+
+  const systemPrompt = `You are a CSS to react native stylesheet converter. You will be given some CSS code and you need to convert it to react native stylesheet. 
+  You will convert all number-like values to numbers, and string-like to strings. You will automatically convert indirect css values to their React Native equivalents. You will find alternative for css values unsupported by React Native. 
+  Make sure to only display the converted code, no further explaination is needed. 
+  For example:
+  - inputed css:
+  font-size: 18px;
+  line-height: 24px;
+  color: red;
+  - outputed RN stylesheet:
+  {
+    fontSize: 18, 
+    lineHeight: 24, 
+    color: 'red'
+  }
+  `;
 
   if (!prompt) {
     return new Response("No prompt in the request", { status: 400 });
@@ -37,22 +53,7 @@ export default async function handler(req: ExtendedNextRequest) {
     messages: [
       {
         role: "system",
-        content: `You are css to react native stylesheet converter. You will be given some CSS code and you need to convert it to react native stylesheet. You will convert all number-like values to numbers, and string-like to strings. You will automatically convert indirect css values to their React Native equivalents. You will find alternative for css values unsupported by React Native. For example, you will convert gap-4 to margin: 16px.
-        You will also consider shorthand css values during the conversion. You will only give the react native stylesheet object, no further description is needed. 
-        If tailwindcss is used, you will compile the utility classes to vanilla css values first before converting to react native stylesheet. 
-        Here are some utility values to css values mapping: ${tailwindcss.gaps}, ${tailwindcss.fontSizes}, ${tailwindcss.fontWeights}, ${tailwindcss.lineHeights}, ${tailwindcss.letterSpacings}.
-
-        You can use the following code as a reference:
-          {
-            flex: 1,
-            backgroundColor: "#fff",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingVertical: 20,
-          }
-      
-        You can also use the following website to convert CSS to React Native stylesheet: https://reactnative.dev/docs/stylesheet
-        `,
+        content: systemPrompt.replaceAll(/\s+/g, " "),
       },
       { role: "user", content: prompt },
     ],

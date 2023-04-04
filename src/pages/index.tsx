@@ -6,8 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Head from "next/head";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { z } from "zod";
 
 const schema = z.object({
@@ -69,16 +67,28 @@ const Home: NextPageWithLayout = () => {
   return (
     <>
       <Head>
-        <title>CSS to Native Converter</title>
+        <title>CSS to React Native Stylesheet</title>
       </Head>
-      <main className="w-full pt-20 pb-16">
+      <main className="w-full pb-16 pt-20">
         <div className="container grid max-w-6xl place-items-center gap-12 sm:gap-14">
-          <h1 className="w-full max-w-4xl text-center text-3xl font-bold leading-tight text-gray-200 sm:text-5xl sm:leading-tight">
-            Convert your <span className="text-violet-400">CSS</span> to react
-            native
-            <span className="text-violet-400"> stylesheet</span> in seconds
-          </h1>
-          <div className="grid w-full gap-5 lg:grid-cols-2">
+          <div className="grid w-full max-w-4xl place-items-center gap-10">
+            <h1 className="text-center text-3xl font-bold leading-tight text-gray-200 sm:text-5xl sm:leading-tight">
+              Convert your <span className="text-violet-400">CSS</span> to react
+              native
+              <span className="text-violet-400"> stylesheet</span> in seconds
+            </h1>
+            <Button
+              aria-label="Convert"
+              className="w-fit"
+              isLoading={isLoading}
+              loadingVariant="dots"
+              onClick={handleSubmit(onSubmit)}
+              disabled={isLoading}
+            >
+              Convert
+            </Button>
+          </div>
+          <div className="grid w-full items-start gap-5 md:grid-cols-2">
             <form
               aria-label="Generate pokemon form"
               className="grid w-full gap-5"
@@ -93,8 +103,7 @@ const Home: NextPageWithLayout = () => {
                 </label>
                 <textarea
                   id="css"
-                  rows={18}
-                  className="w-full rounded-md border-gray-400 bg-transparent px-5 py-4 text-base text-gray-50 transition-colors placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
+                  className="h-[480px] w-full rounded-md border-gray-400 bg-[#282c34] px-5 py-4 text-base text-gray-50 transition-colors placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
                   placeholder="Enter your css here.."
                   {...register("css", { required: true })}
                   onKeyDown={(e) => {
@@ -110,21 +119,12 @@ const Home: NextPageWithLayout = () => {
                   </p>
                 ) : null}
               </fieldset>
-              <Button
-                aria-label="Convert"
-                className="w-fit"
-                isLoading={isLoading}
-                loadingVariant="dots"
-                disabled={isLoading}
-              >
-                Convert
-              </Button>
             </form>
             <div className="flex w-full flex-col gap-2.5">
               <h2 className="text-base font-semibold text-gray-50 sm:text-lg">
-                Stylesheet
+                RN Stylesheet
               </h2>
-              <CodeBlock code={generatedStyles} language="css" />
+              <CodeBlock code={generatedStyles.replace(/`/g, "")} />
             </div>
           </div>
         </div>
