@@ -19,9 +19,9 @@ const Header = () => {
     <header
       aria-label="header"
       className={twMerge(
-        "fixed top-0 left-0 z-20 flex w-full items-center gap-4",
+        "fixed left-0 top-0 z-20 flex w-full items-center gap-4",
         isScrolled
-          ? "bg-gray-900/20 backdrop-blur-sm backdrop-filter"
+          ? "bg-zinc-800/60 backdrop-blur-sm backdrop-filter"
           : "bg-transparent"
       )}
     >
@@ -31,7 +31,7 @@ const Header = () => {
           href="/"
           className="text-xl font-medium text-white transition-colors hover:text-gray-100"
         >
-          cssToNative
+          Native CSS
         </Link>
         <a
           aria-label="navigate to github repo"
