@@ -23,7 +23,6 @@ const Home: NextPageWithLayout = () => {
     resolver: zodResolver(schema),
   });
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     setGeneratedStyles("");
     setIsLoading(true);
     const response = await fetch("/api/generate", {
