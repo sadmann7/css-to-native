@@ -1,8 +1,8 @@
-# [Native CSS](https://nativecss.vercel.app/)
+# [cssToNative](https://css-to-native.vercel.app/)
 
 This project converts CSS to react native stylesheet. It is bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-[![Native CSS](./public/screenshot.png)](https://nativecss.vercel.app/)
+[![cssToNative](./public/screenshot.png)](https://css-to-native.vercel.app/)
 
 ## Tech Stack
 
