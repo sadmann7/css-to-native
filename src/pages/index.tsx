@@ -6,10 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Head from "next/head";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 
 const schema = z.object({
-  css: z.string().min(1, { message: "Please enter your css" }),
+  css: z.string().min(1),
 });
 type Inputs = z.infer<typeof schema>;
 
@@ -18,11 +19,9 @@ const Home: NextPageWithLayout = () => {
   const [generatedStyles, setGeneratedStyles] = useState("");
 
   // react-hook-form
-  const { register, handleSubmit, formState, control, reset } = useForm<Inputs>(
-    {
-      resolver: zodResolver(schema),
-    }
-  );
+  const { register, handleSubmit, formState, watch } = useForm<Inputs>({
+    resolver: zodResolver(schema),
+  });
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
     setGeneratedStyles("");
@@ -58,11 +57,8 @@ const Home: NextPageWithLayout = () => {
       setGeneratedStyles((prev) => prev + chunkValue);
     }
 
-    // reset();
     setIsLoading(false);
   };
-
-  console.log(generatedStyles);
 
   return (
     <>
@@ -70,23 +66,25 @@ const Home: NextPageWithLayout = () => {
         <title>CSS to React Native Stylesheet</title>
       </Head>
       <main className="w-full pb-16 pt-20">
-        <div className="container grid max-w-6xl place-items-center gap-12 sm:gap-14">
-          <div className="grid w-full max-w-4xl place-items-center gap-10">
+        <div className="container grid max-w-6xl place-items-center gap-10">
+          <div className="grid w-full max-w-4xl place-items-center gap-8">
             <h1 className="text-center text-3xl font-bold leading-tight text-gray-200 sm:text-5xl sm:leading-tight">
-              Convert your <span className="text-violet-400">CSS</span> to react
-              native
-              <span className="text-violet-400"> stylesheet</span> in seconds
+              Convert your <span className="text-violet-400">CSS</span> to{" "}
+              <span className="text-violet-400">react native stylesheet</span>{" "}
+              in seconds
             </h1>
-            <Button
-              aria-label="Convert"
-              className="w-fit"
-              isLoading={isLoading}
-              loadingVariant="dots"
-              onClick={handleSubmit(onSubmit)}
-              disabled={isLoading}
-            >
-              Convert
-            </Button>
+            <div className="grid place-items-center gap-5">
+              <Button
+                aria-label="Convert to RN stylesheet"
+                className="w-fit px-8"
+                isLoading={isLoading}
+                loadingVariant="dots"
+                onClick={handleSubmit(onSubmit)}
+                disabled={isLoading}
+              >
+                Convert
+              </Button>
+            </div>
           </div>
           <div className="grid w-full items-start gap-5 md:grid-cols-2">
             <form
@@ -103,8 +101,13 @@ const Home: NextPageWithLayout = () => {
                 </label>
                 <textarea
                   id="css"
-                  className="h-[480px] w-full rounded-md border-gray-400 bg-[#282c34] px-5 py-4 text-base text-gray-50 transition-colors placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400"
-                  placeholder="Enter your css here.."
+                  className={twMerge(
+                    "h-[480px] w-full rounded-md bg-[#282c34] px-5 py-4 text-base text-gray-50 transition-colors placeholder:text-gray-400 focus:outline-none focus:ring-2",
+                    formState.errors.css?.message
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                      : "border-gray-400 focus:border-gray-400 focus:ring-violet-400"
+                  )}
+                  placeholder="Enter your css here..."
                   {...register("css", { required: true })}
                   onKeyDown={(e) => {
                     if (!formState.isValid || isLoading) return;
@@ -113,11 +116,6 @@ const Home: NextPageWithLayout = () => {
                     }
                   }}
                 />
-                {formState.errors.css?.message ? (
-                  <p className="text-sm font-medium text-red-500">
-                    {formState.errors.css.message}
-                  </p>
-                ) : null}
               </fieldset>
             </form>
             <div className="flex w-full flex-col gap-2.5">

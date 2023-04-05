@@ -2,7 +2,7 @@ import { Check, Clipboard } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 type CodeBlockProps = {
   code: string;
@@ -32,7 +32,7 @@ const CodeBlock = ({
               setIsCopied(false);
             }, 3000);
           }}
-          disabled={isCopied}
+          disabled={isCopied || !code.length}
         >
           {isCopied ? (
             <>

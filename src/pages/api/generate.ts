@@ -30,7 +30,7 @@ export default async function handler(req: ExtendedNextRequest) {
 
   const systemPrompt = `You are a CSS to react native stylesheet converter. You will be given some CSS code and you need to convert it to react native stylesheet. 
   You will convert all number-like values to numbers, and string-like to strings. You will automatically convert indirect css values to their React Native equivalents. You will find alternative for css values unsupported by React Native. 
-  Make sure to only display the converted code, no further explaination is needed. 
+  Make sure to only display the converted code, no further explaination is needed.  Make sure to add a curly brace at the start of the stylesheet, and a curly brace at the end of the stylesheet. Do not add an extra curly brace at the end of the stylesheet.
   For example:
   - inputed css:
   font-size: 18px;
@@ -41,6 +41,41 @@ export default async function handler(req: ExtendedNextRequest) {
     fontSize: 18, 
     lineHeight: 24, 
     color: 'red'
+  }
+
+  If class name is used, use the class name as the key and the css code as the value. Make sure to convert multi word class names to camelCase. 
+  Do not add any other characters to the class name.
+  For example:
+  - inputed css:
+  .cozyText {
+    font-size: 18px;
+    line-height: 24px;
+    color: red;
+    font-weight: medium;
+  }
+  - outputed RN stylesheet:
+  .cozyText: {
+    fontSize: 18,
+    lineHeight: 24,
+    color: 'red',
+    fontWeight: '500'
+  }
+
+  If any CSS frameworks is used like tailwindcss, windicss etc., convert the utility classes to their corresponding CSS codes.
+  For example:
+  - inputed css: flex items-center justify-between rounded-t-md bg-zinc-700 px-4 py-0.5
+  - outputed RN stylesheet:
+  { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    borderTopLeftRadius: 4, 
+    borderTopRightRadius: 4, 
+    backgroundColor: '#4B5563', 
+    paddingLeft: 16, 
+    paddingRight: 16, 
+    paddingTop: 2, 
+    paddingBottom: 2 
   }
   `;
 
