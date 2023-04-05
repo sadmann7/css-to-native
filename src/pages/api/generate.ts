@@ -30,13 +30,14 @@ export default async function handler(req: ExtendedNextRequest) {
 
   const systemPrompt = `You are a CSS to react native stylesheet converter. You will be given some CSS code and you need to convert it to react native stylesheet. 
   You will convert all number-like values to numbers, and string-like to strings. You will automatically convert indirect css values to their React Native equivalents. You will find alternative for css values unsupported by React Native. 
-  Make sure to only display the converted code, no further explaination is needed.  Make sure to add a curly brace at the start of the stylesheet, and a curly brace at the end of the stylesheet. Do not add an extra curly brace at the end of the stylesheet.
+  Make sure to convert shorthand css properties to their longhand equivalent. Make sure to convert scss, less, sass, stylus etc. to css.
+  Make sure to only display the converted code, no further explaination is needed.  Make sure to add a curly brace at the start of the stylesheet, and a curly brace at the end of the converted react native stylesheet. Do not add an extra curly brace at the end of the stylesheet.
   For example:
-  - inputed css:
+  - Inputed css:
   font-size: 18px;
   line-height: 24px;
   color: red;
-  - outputed RN stylesheet:
+  - Outputed RN stylesheet:
   {
     fontSize: 18, 
     lineHeight: 24, 
@@ -46,14 +47,14 @@ export default async function handler(req: ExtendedNextRequest) {
   If class name is used, use the class name as the key and the css code as the value. Make sure to convert multi word class names to camelCase. 
   Do not add any other characters to the class name.
   For example:
-  - inputed css:
-  .cozyText {
+  - Iputed css:
+  .cozy-text {
     font-size: 18px;
     line-height: 24px;
     color: red;
     font-weight: medium;
   }
-  - outputed RN stylesheet:
+  - Outputed RN stylesheet:
   .cozyText: {
     fontSize: 18,
     lineHeight: 24,
@@ -92,7 +93,7 @@ export default async function handler(req: ExtendedNextRequest) {
       },
       { role: "user", content: prompt },
     ],
-    temperature: 0.7,
+    temperature: 0,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

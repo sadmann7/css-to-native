@@ -122,7 +122,9 @@ const Home: NextPageWithLayout = () => {
               <h2 className="text-base font-semibold text-gray-50 sm:text-lg">
                 RN Stylesheet
               </h2>
-              <CodeBlock code={generatedStyles.replace(/`/g, "")} />
+              <CodeBlock
+                code={generatedStyles.replace(/`/g, "").replace(/}$/g, "")}
+              />
             </div>
           </div>
         </div>

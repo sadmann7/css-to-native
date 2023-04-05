@@ -30,20 +30,7 @@ export default function handler(req: NextRequest) {
           }}
         >
           <div tw="flex items-center text-3xl justify-center flex-col">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="124"
-              height="124"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              stroke-width="1"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 8 10"></polyline>
-            </svg>
+            <div tw="text-white font-bold">Native CSS</div>
           </div>
           <div tw="flex max-w-4xl items-center justify-center flex-col mt-10">
             <div tw="text-5xl font-bold whitespace-pre-wrap tracking-tight leading-tight text-white px-8">
@@ -61,7 +48,7 @@ export default function handler(req: NextRequest) {
       }
     );
   } catch (e) {
-    e instanceof Error && console.log(`${e.message as string}`);
+    e instanceof Error ? console.log(`${e.message as string}`) : console.log(e);
     return new Response(`Failed to generate the image`, {
       status: 500,
     });
